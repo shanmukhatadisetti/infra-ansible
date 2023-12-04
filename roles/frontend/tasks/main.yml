@@ -1,0 +1,33 @@
+- name: Set hostname
+  ansible.builtin.shell: set-hostname frontend
+
+- name: installing Nginx
+  ansible.builtin.dnf:
+    name: nginx
+    state: present
+
+- name: copying expense config file in Nginx
+  ansible.builtin.template:
+    src: expense.conf
+    dest: /etc/nginx/default.d/expense.conf
+
+- name: copying nginx config
+  ansible.builtin.template:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+
+- name: include app pre-requisites
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: app_prereq
+
+- name: starting nginx service
+  ansible.builtin.systemd:
+    name: nginx
+    state: restarted
+    enabled: yes
+
+- name: installing filebeat
+  ansible.builtin.import_role:
+    name: elk
+    tasks_from: filebeat

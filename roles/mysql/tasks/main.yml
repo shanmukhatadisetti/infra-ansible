@@ -1,0 +1,24 @@
+- name: Set Hostname
+  ansible.builtin.shell: set-hostname mysql
+
+- name: Disable mysql 8 version
+  ansible.builtin.shell: dnf module disable mysql -y
+
+- name: Copy Mysql repo file
+  ansible.builtin.template:
+    src: mysql.repository
+    dest: /etc/yum.repos.d/mysql.repo
+
+- name: install Mysql server
+  ansible.builtin.dnf:
+    name: mysql-community-server
+    state: present
+
+- name: start mysql service
+  ansible.builtin.systemd:
+    name: mysqld
+    state: restarted
+    enabled: yes
+
+- name: setup root password
+  ansible.builtin.shell: mysql_secure_installation --set-root-pass {{ lookup('amazon.aws.aws_ssm', 'expense.mysql.DB_PASS', region='us-east-1' ) }}

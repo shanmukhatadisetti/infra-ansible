@@ -1,0 +1,20 @@
+- name: Downloading Elasticsearch repository
+  ansible.builtin.template:
+    src: elasticsearch.repository
+    dest: /etc/yum.repos.d/elastic.repo
+
+- name: Installing Filebeat
+  ansible.builtin.dnf:
+    name: filebeat
+    state: installed
+
+- name: Copy Filebeat Configuration
+  ansible.builtin.template:
+    src: filebeat.yml
+    dest: /etc/filebeat/filebeat.yml
+
+- name: Starting Filebeat
+  ansible.builtin.systemd:
+    name: filebeat
+    state: restarted
+    enabled: yes
