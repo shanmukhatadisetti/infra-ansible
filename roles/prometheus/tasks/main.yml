@@ -1,0 +1,10 @@
+- name: coping prometheus configuration
+  ansible.builtin.template:
+    src: prometheus.yml
+    dest: /opt/prometheus/prometheus.yml
+
+- name: stating prometheus service
+  ansible.builtin.systemd:
+    name: prometheus
+    state: restarted
+    enabled: yes
