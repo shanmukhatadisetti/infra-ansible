@@ -7,7 +7,7 @@
 - name: Downloading node-exporter service
   ansible.builtin.template:
     src: node-exporter.service
-    dest: /etc/systemd/system/node-exporter.service --collector.systemd
+    dest: /etc/systemd/system/node-exporter.service
 
 - name: Starting Node-Exporter service
   ansible.builtin.systemd:
