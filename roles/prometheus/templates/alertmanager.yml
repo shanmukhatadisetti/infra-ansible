@@ -10,7 +10,7 @@ receivers:
       - to: shanmukhatadisetti@gmail.com
         from: shanmukhatadisetti@gmail.com
         smarthost: "email-smtp.us-east-1.amazonaws.com:587"
-        auth_username: "{{ lookup('amazon.aws.aws_ssm', 'prometheus.email.user', region='us-east-1' ) }}"
+        auth_username: "{{ lookup('amazon.aws.aws_ssm', 'prometheus.email.username', region='us-east-1' ) }}"
         auth_password: "{{ lookup('amazon.aws.aws_ssm', 'prometheus.email.password', region='us-east-1' ) }}"
         require_tls: true
 inhibit_rules:
