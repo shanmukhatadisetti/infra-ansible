@@ -3,6 +3,11 @@
     src: prometheus.yml
     dest: /opt/prometheus/prometheus.yml
 
+- name: coping alert configuration
+  ansible.builtin.template:
+    src: alerts.yml
+    dest: /opt/prometheus/alerts.yml
+
 - name: stating prometheus service
   ansible.builtin.systemd:
     name: prometheus
