@@ -8,3 +8,45 @@ groups:
           severity: critical
         annotations:
           summary: Server Down Alert
+
+      - alert: BackendServiceDownAlerts
+        expr: node_systemd_unit_state{exported_name="backend.service",state="active"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: Backend Service Down Alert
+
+      - alert: NginxServiceDownAlerts
+        expr: node_systemd_unit_state{exported_name="nginx.service",state="active"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: Nginx Service Down Alert
+
+      - alert: MysqlServiceDownAlerts
+        expr: node_systemd_unit_state{exported_name="nginx.service",state="active"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: Mysql Service Down Alert
+
+      - alert: HighCpuUsageAlert
+        expr: 100-(avg by (name)(rate(node_cpu_seconds_total{mode="idle"}[1m])*100)) > 80
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: High Cpu Usage Alert
+
+      - alert: HighMemoryUsageAlert
+        expr: 100-((node_memory_MemFree_bytes+node_memory_Cached_bytes+node_memory_Buffers_bytes)/node_memory_MemTotal_bytes*100) > 80
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: High Memory Usage Alert
+
+
