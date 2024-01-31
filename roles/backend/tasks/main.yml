@@ -1,49 +1,49 @@
-#- name: Set Hostname
-#  ansible.builtin.shell: set-hostname backend
-#
-#- name: Enable Nodejs
-#  ansible.builtin.shell: dnf module disable nodejs -y ; dnf module enable nodejs:18 -y
-#
-#- name: installing Nodejs
-#  ansible.builtin.dnf:
-#    name: nodejs
-#    state: present
-#
-#- name: Add application user
-#  ansible.builtin.user:
-#    name: expense
-#
-#- name: Copying backend configuration
-#  ansible.builtin.template:
-#    src: backend.service
-#    dest: /etc/systemd/system/backend.service
-#
-#- name: include app pre-requisites
-#  ansible.builtin.import_role:
-#    name: common
-#    tasks_from: app_prereq
-#
-#- name: installing Nodejs Dependencies
-#  ansible.builtin.shell: npm install
-#  args:
-#    chdir: /app
-#
-#- name: installing mysql client
-#  ansible.builtin.dnf:
-#    name: mysql
-#    state: present
-#
-#- name: Load schema
-#  ansible.builtin.shell: mysql -h {{ lookup('amazon.aws.aws_ssm', '{{env}}.rds.endpoint', region='us-east-1' ) }} -u{{ lookup('amazon.aws.aws_ssm', '{{env}}.rds.master_username', region='us-east-1' ) }} -p{{ lookup('amazon.aws.aws_ssm', '{{env}}.rds.master_password', region='us-east-1' ) }} < /app/schema/backend.sql
-#
-#- name: starting backend services
-#  ansible.builtin.systemd:
-#    name: backend
-#    state: restarted
-#    enabled: yes
-#    daemon-reload: yes
-#
-#- name: installing node-exporter
-#  ansible.builtin.import_role:
-#    name: prometheus
-#    tasks_from: node-exporter
+- name: Set Hostname
+  ansible.builtin.shell: set-hostname backend
+
+- name: Enable Nodejs
+  ansible.builtin.shell: dnf module disable nodejs -y ; dnf module enable nodejs:18 -y
+
+- name: installing Nodejs
+  ansible.builtin.dnf:
+    name: nodejs
+    state: present
+
+- name: Add application user
+  ansible.builtin.user:
+    name: expense
+
+- name: Copying backend configuration
+  ansible.builtin.template:
+    src: backend.service
+    dest: /etc/systemd/system/backend.service
+
+- name: include app pre-requisites
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: app_prereq
+
+- name: installing Nodejs Dependencies
+  ansible.builtin.shell: npm install
+  args:
+    chdir: /app
+
+- name: installing mysql client
+  ansible.builtin.dnf:
+    name: mysql
+    state: present
+
+- name: Load schema
+  ansible.builtin.shell: mysql -h {{ lookup('amazon.aws.aws_ssm', '{{env}}.rds.endpoint', region='us-east-1' ) }} -u{{ lookup('amazon.aws.aws_ssm', '{{env}}.rds.master_username', region='us-east-1' ) }} -p{{ lookup('amazon.aws.aws_ssm', '{{env}}.rds.master_password', region='us-east-1' ) }} < /app/schema/backend.sql
+
+- name: starting backend services
+  ansible.builtin.systemd:
+    name: backend
+    state: restarted
+    enabled: yes
+    daemon-reload: yes
+
+- name: installing node-exporter
+  ansible.builtin.import_role:
+    name: prometheus
+    tasks_from: node-exporter
